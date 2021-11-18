@@ -53,6 +53,29 @@ class wireguard extends eqLogic {
 
 	/*     * *********************Méthodes d'instance************************* */
 
+	public function updateDnsJeedomInformation() {
+		if ($this->getConfiguration('PrivateKey') == '') {
+			$this->setConfiguration('PrivateKey', trim(shell_exec('wg genkey')));
+		}
+		$publickey = trim(shell_exec('echo \'' . $this->getConfiguration('PrivateKey') . '\' | wg pubkey'));
+		$url = 'http://api.eu.jeedom.link/service/jeedns/register';
+		$request_http = new com_http($url);
+		$request_http->setPost(json_encode(array('username' => jeedom::getHardwareKey(), 'password' => config::byKey('dns::token'), 'PublicKey' => $publickey)));
+		$result = $request_http->exec();
+		$json = is_json($result, null);
+		if ($json === null) {
+			throw new Exception(__('Retour invalide : ', __FILE__) . $result);
+		}
+		if (!isset($json['state']) || $json['state'] == 'nok') {
+			throw new Exception(__('Retour invalide : ', __FILE__) . json_encode($json));
+		}
+		$this->setConfiguration('PublicKey', $json['result']['PublicKey']);
+		$this->setConfiguration('Address', $json['result']['AllowedIPs']);
+		$this->setConfiguration('Endpoint', $json['result']['Ip'] . ':' . $json['result']['ListenPort']);
+		$this->setConfiguration('AllowedIPs', '172.0.0.1/32');
+		$this->save();
+	}
+
 	public function getInterfaceName() {
 		return 'wg_' . $this->getId();
 	}
@@ -73,12 +96,6 @@ class wireguard extends eqLogic {
 
 	public function preRemove() {
 		$this->stop_wireguard();
-	}
-
-	public function preSave() {
-		if ($this->getConfiguration('key') == '') {
-			$this->setConfiguration('key', config::genKey(30));
-		}
 	}
 
 	public function postSave() {
@@ -186,6 +203,9 @@ class wireguard extends eqLogic {
 	}
 
 	public function start_wireguard() {
+		if ($this->getLogicalId() == 'dnsjeedom') {
+			$this->updateDnsJeedomInformation();
+		}
 		$this->stop_wireguard();
 		$this->writeConfig();
 		$log_name = ('wireguard_' . $this->getName());
