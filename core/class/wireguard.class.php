@@ -271,10 +271,10 @@ class wireguard extends eqLogic {
 	}
 
 	public function getState() {
-		$return = (shell_exec("sudo wg show " . $this->getInterfaceName() . " | wc -l") > 0);
+		$return = (shell_exec("sudo wg show " . $this->getInterfaceName() . " | grep 'latest handshake' | wc -l") > 0);
 		if (!$return) {
 			usleep(rand(10000, 2000000));
-			$return = (shell_exec("sudo wg show " . $this->getInterfaceName() . " | wc -l") > 0);
+			$return = (shell_exec("sudo wg show " . $this->getInterfaceName() . " | grep 'latest handshake' | wc -l") > 0);
 		}
 		return $return;
 	}
