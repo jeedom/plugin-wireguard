@@ -271,11 +271,11 @@ class wireguard extends eqLogic {
 	}
 
 	public function getState() {
-		if ((strtotime('now')  - $this->getLatestHandshakes()) < 120) {
+		if ((strtotime('now')  - $this->getLatestHandshakes()) < 300) {
 			return true;
 		}
 		sleep(5);
-		if ((strtotime('now')  - $this->getLatestHandshakes()) < 120) {
+		if ((strtotime('now')  - $this->getLatestHandshakes()) < 300) {
 			return true;
 		}
 	}
