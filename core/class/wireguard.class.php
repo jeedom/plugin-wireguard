@@ -198,7 +198,9 @@ class wireguard extends eqLogic {
 		[Peer]
 		PublicKey = " . $this->getConfiguration('PublicKey') . "
 		Endpoint = " . $this->getConfiguration('Endpoint') . "
+		PersistentKeepalive = " . $this->getConfiguration('PeristentKeepalive', 25) . "
 		AllowedIPs = " . $this->getConfiguration('AllowedIPs');
+
 		unlink(__DIR__ . '/../../data/wg_' . $this->getId() . '.conf');
 		file_put_contents(__DIR__ . '/../../data/wg_' . $this->getId() . '.conf', $config);
 	}
