@@ -51,6 +51,10 @@ class wireguard extends eqLogic {
 		}
 	}
 
+	public static function cleanVpnName($_name) {
+		return str_replace(array(' ', '(', ')', '/', ',', ';', '\\', '%', '*', '$'), '_', $_name);
+	}
+
 	/*     * *********************Méthodes d'instance************************* */
 
 	public function updateDnsJeedomInformation() {
@@ -58,22 +62,23 @@ class wireguard extends eqLogic {
 			$this->setConfiguration('PrivateKey', trim(shell_exec('wg genkey')));
 		}
 		$publickey = trim(shell_exec('echo \'' . $this->getConfiguration('PrivateKey') . '\' | wg pubkey'));
-		$url = 'http://api.eu.jeedom.link/service/jeedns/register';
+		$url = 'https://api.eu.jeedom.link/service/jeedns/register';
 		$request_http = new com_http($url);
+		$request_http->setHeader(array('Content-Type: application/json'));
 		$request_http->setPost(json_encode(array('username' => jeedom::getHardwareKey(), 'password' => config::byKey('dns::token'), 'PublicKey' => $publickey)));
 		$result = $request_http->exec();
-		$json = is_json($result, null);
-		if ($json === null) {
+		$json = is_json($result, false);
+		if ($json === false) {
 			throw new Exception(__('Retour invalide : ', __FILE__) . $result);
 		}
 		if (!isset($json['state']) || $json['state'] == 'nok') {
 			throw new Exception(__('Retour invalide : ', __FILE__) . json_encode($json));
 		}
 		$this->setConfiguration('PublicKey', $json['result']['PublicKey']);
-		$this->setConfiguration('Address', $json['result']['AllowedIPs']);
+		$this->setConfiguration('Address', $json['result']['AllowIps']);
 		$this->setConfiguration('Endpoint', $json['result']['Ip'] . ':' . $json['result']['ListenPort']);
 		$this->setConfiguration('AllowedIPs', '172.0.0.1/32');
-		$this->save();
+		$this->save(true);
 	}
 
 	public function getInterfaceName() {
@@ -208,7 +213,7 @@ class wireguard extends eqLogic {
 		}
 		$this->stop_wireguard();
 		$this->writeConfig();
-		$log_name = ('wireguard_' . $this->getName());
+		$log_name = ('wireguard_' . self::cleanVpnName($this->getName()));
 		log::remove($log_name);
 		$cmd = system::getCmdSudo() . $this->getCmdLine() . ' >> ' . log::getPathToLog($log_name) . '  2>&1 &';
 		log::add($log_name, 'info', __('Lancement wireguard : ', __FILE__) . $cmd);
