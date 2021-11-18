@@ -61,11 +61,14 @@ class wireguard extends eqLogic {
 		if ($this->getConfiguration('PrivateKey') == '') {
 			$this->setConfiguration('PrivateKey', trim(shell_exec('wg genkey')));
 		}
+		if ($this->getConfiguration('PresharedKey') == '') {
+			$this->setConfiguration('PresharedKey', trim(shell_exec('wg genpsk')));
+		}
 		$publickey = trim(shell_exec('echo \'' . $this->getConfiguration('PrivateKey') . '\' | wg pubkey'));
 		$url = 'https://api.eu.jeedom.link/service/jeedns/register';
 		$request_http = new com_http($url);
 		$request_http->setHeader(array('Content-Type: application/json'));
-		$request_http->setPost(json_encode(array('username' => jeedom::getHardwareKey(), 'password' => config::byKey('dns::token'), 'PublicKey' => $publickey)));
+		$request_http->setPost(json_encode(array('username' => jeedom::getHardwareKey(), 'password' => config::byKey('dns::token'), 'PublicKey' => $publickey, 'PresharedKey' => $this->getConfiguration('PresharedKey'))));
 		$result = $request_http->exec();
 		$json = is_json($result, false);
 		if ($json === false) {
@@ -78,6 +81,7 @@ class wireguard extends eqLogic {
 		$this->setConfiguration('Address', $json['result']['AllowIps']);
 		$this->setConfiguration('Endpoint', $json['result']['Ip'] . ':' . $json['result']['ListenPort']);
 		$this->setConfiguration('AllowedIPs', '172.0.0.1/32');
+		$this->setConfiguration('PeristentKeepalive', 25);
 		$this->save(true);
 	}
 
@@ -198,9 +202,13 @@ class wireguard extends eqLogic {
 		[Peer]
 		PublicKey = " . $this->getConfiguration('PublicKey') . "
 		Endpoint = " . $this->getConfiguration('Endpoint') . "
-		PersistentKeepalive = " . $this->getConfiguration('PeristentKeepalive', 25) . "
 		AllowedIPs = " . $this->getConfiguration('AllowedIPs');
-
+		if ($this->getConfiguration('PresharedKey') != '') {
+			$config .= "PresharedKey = " . $this->getConfiguration('PresharedKey') . "\n";
+		}
+		if ($this->getConfiguration('PeristentKeepalive') != '') {
+			$config .= "PersistentKeepalive = " . $this->getConfiguration('PeristentKeepalive', 25) . "\n";
+		}
 		unlink(__DIR__ . '/../../data/wg_' . $this->getId() . '.conf');
 		file_put_contents(__DIR__ . '/../../data/wg_' . $this->getId() . '.conf', $config);
 	}

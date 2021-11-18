@@ -97,33 +97,45 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 								<br />
 								<div class="form-group">
-									<label class="col-sm-4 control-label">{{[Endpoint] Serveur (ip:port)}}</label>
-									<div class="col-sm-8">
-										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Endpoint" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">{{[Address] Addresse}}</label>
+									<label class="col-sm-4 control-label">{{[Interface][Address] Addresse}}</label>
 									<div class="col-sm-8">
 										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Address" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label">{{[PrivateKey] Clef privée}}</label>
+									<label class="col-sm-4 control-label">{{[Interface][PrivateKey] Clef privée (client)}}</label>
 									<div class="col-sm-8">
 										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PrivateKey" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label">{{[PublicKey] Clef public (serveur)}}</label>
+									<label class="col-sm-4 control-label">{{[Peer][Endpoint] Serveur (ip:port)}}</label>
+									<div class="col-sm-8">
+										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Endpoint" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">{{[[Peer]PublicKey] Clef public}}</label>
 									<div class="col-sm-8">
 										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PublicKey" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label">{{[AllowedIPs] Ip autorisée}}</label>
+									<label class="col-sm-4 control-label">{{[Peer][AllowedIPs] Ip autorisée}}</label>
 									<div class="col-sm-8">
 										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="AllowedIPs" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">{{[Peer][PresharedKey] Clef paratagée (optionnel)}}</label>
+									<div class="col-sm-8">
+										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PresharedKey" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">{{[Peer][PeristentKeepalive] Keepalive (optionnel)}}</label>
+									<div class="col-sm-8">
+										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PeristentKeepalive" />
 									</div>
 								</div>
 							</fieldset>
