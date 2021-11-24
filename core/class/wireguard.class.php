@@ -202,7 +202,7 @@ class wireguard extends eqLogic {
 		[Peer]
 		PublicKey = " . $this->getConfiguration('PublicKey') . "
 		Endpoint = " . $this->getConfiguration('Endpoint') . "
-		AllowedIPs = " . $this->getConfiguration('AllowedIPs');
+		AllowedIPs = " . $this->getConfiguration('AllowedIPs') . "\n";
 		if ($this->getConfiguration('PresharedKey') != '') {
 			$config .= "PresharedKey = " . $this->getConfiguration('PresharedKey') . "\n";
 		}
