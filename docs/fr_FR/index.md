@@ -2,13 +2,13 @@
 
 Ce plugin permet de connecter Jeedom à un serveur Wireguard.
 
-Il peut également être utilisé par le service DNS Jeedom en remplacement d'Openvpn pour accéder à votre Jeedom depuis internet.
+Il peut également être utilisé par le service de DNS Jeedom en remplacement du **plugin Openvpn** pour accéder à votre Jeedom depuis internet.
 
 # Configuration
 
 ## Configuration du plugin
 
-Une fois le plugin téléchargé et activé, il faut s'assurer que les dépendances sont correctement installées sur votre système.
+Une fois le plugin téléchargé et activé, il faut s'assurer que les dépendances sont correctement installées sur la page de configuration générale.
 
 ## Configuration des clients
 
@@ -22,11 +22,11 @@ Cliquez sur un équipement pour accéder à sa page de configuration :
 - **Activer** : permet de rendre l’équipement actif.
 - **Visible** : permet de rendre l’équipement visible sur le dashboard.
 
-Si vous utilisez uniquement le **plugin Wireguard** pour la connexion au DNS Jeedom, il suffit de se rendre dans la configuration générale Jeedom (**Réglages → Système → Configuration**), onglet **Réseaux**. Sélectionnez le choix **Wireguard** dans le menu déroulant de la partie **Gestion DNS Market** puis **Démarrer/Redémarrer** la connexion VPN.
+Si vous utilisez uniquement le **plugin Wireguard** pour la connexion au DNS Jeedom, il suffit de se rendre dans la configuration générale Jeedom (**Réglages → Système → Configuration**), onglet **Réseaux**. Sélectionnez **Wireguard** dans le menu déroulant de la partie **Gestion DNS Market** puis **Démarrer/Redémarrer** la connexion VPN.
 
 >**INFORMATION**
 >
->Concernant l'accès au DNS Jeedom, vous n'avez rien de plus à faire à votre niveau. Le plugin va se charger de générer la configuration du tunnel VPN Wireguard puis démarrer le service automatiquement.
+>Concernant l'accès au DNS Jeedom, vous n'avez rien de plus à faire à votre niveau. Le plugin va automatiquement se charger de créer l'équipement, générer la configuration du tunnel VPN puis démarrer le service.
 
 Si vous souhaitez configurer l'accès à un serveur Wireguard personnel, voici la liste des paramètres du client disponibles dans le plugin :
 
@@ -38,7 +38,7 @@ Si vous souhaitez configurer l'accès à un serveur Wireguard personnel, voici l
 
 >**ASTUCE**
 >
->Vous pouvez utiliser le tag ``#interface#`` dans les champs **Post-Up** et **Post-Down** pour récupérer le nom de l'interface client Wireguard en cours.
+>Vous pouvez utiliser le tag ``#interface#`` dans les champs **Post-Up** et **Post-Down** pour récupérer le nom de l'interface utilisée par le client Wireguard.
 
 - **[Peer]** :
     - **Clé publique** (`PublicKey`) : clé publique du serveur Wireguard.
@@ -49,7 +49,7 @@ Si vous souhaitez configurer l'accès à un serveur Wireguard personnel, voici l
 
 >**IMPORTANT**
 >
->L'équipe Jeedom ne pourra bien évidemment n'assurer le support que de la partie DNS Jeedom.
+>Seul le support relatif à l'accès au DNS Jeedom est assuré par l'équipe.
 
 # Commandes
 
