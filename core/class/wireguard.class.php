@@ -20,13 +20,11 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class wireguard extends eqLogic {
-	/*     * *************************Attributs****************************** */
 
 	/*     * ***********************Methode static*************************** */
 
-
 	public static function cron5() {
-		foreach (self::byType('wireguard') as $eqLogic) {
+		foreach (self::byType(__CLASS__) as $eqLogic) {
 			try {
 				if ($eqLogic->getConfiguration('enable') == 1 && !$eqLogic->getState()) {
 					if ($eqLogic->getLogicalId() == 'dnsjeedom') {
@@ -128,7 +126,7 @@ class wireguard extends eqLogic {
 			$up->setLogicalId('up');
 			$up->setIsVisible(1);
 			$up->setName(__('Actif', __FILE__));
-			$state->setOrder(2);
+			$up->setOrder(2);
 			$up->setConfiguration('repeatEventManagement', 'never');
 		}
 		$up->setType('info');
@@ -142,7 +140,7 @@ class wireguard extends eqLogic {
 			$start->setLogicalId('start');
 			$start->setIsVisible(1);
 			$start->setName(__('Démarrer', __FILE__));
-			$state->setOrder(4);
+			$start->setOrder(4);
 		}
 		$start->setType('action');
 		$start->setSubType('other');
@@ -155,7 +153,7 @@ class wireguard extends eqLogic {
 			$stop->setLogicalId('stop');
 			$stop->setIsVisible(1);
 			$stop->setName(__('Arrêter', __FILE__));
-			$state->setOrder(5);
+			$stop->setOrder(5);
 		}
 		$stop->setType('action');
 		$stop->setSubType('other');
@@ -168,7 +166,7 @@ class wireguard extends eqLogic {
 			$ip->setLogicalId('ip');
 			$ip->setIsVisible(1);
 			$ip->setName(__('IP', __FILE__));
-			$state->setOrder(3);
+			$ip->setOrder(3);
 		}
 		$ip->setType('info');
 		$ip->setSubType('string');
@@ -246,7 +244,7 @@ class wireguard extends eqLogic {
 			$interface = $this->getInterfaceName();
 			if ($interface !== null && $interface != '' && $interface !== false) {
 				$cmd = system::getCmdSudo() . 'iptables -L INPUT -v --line-numbers | grep ' . $interface;
-				log::add('wireguard', 'debug', $cmd);
+				log::add(__CLASS__, 'debug', $cmd);
 				$rules = shell_exec($cmd);
 				$c = 0;
 				while ($rules != '') {
@@ -255,7 +253,7 @@ class wireguard extends eqLogic {
 						break;
 					}
 					$cmd = system::getCmdSudo() . 'iptables -D INPUT ' . $ln;
-					log::add('wireguard', 'debug', $cmd);
+					log::add(__CLASS__, 'debug', $cmd);
 					shell_exec($cmd);
 					$rules = shell_exec(system::getCmdSudo() . 'iptables -L INPUT -v --line-numbers | grep ' . $interface);
 					$c++;
@@ -264,7 +262,7 @@ class wireguard extends eqLogic {
 					}
 				}
 				$cmd = system::getCmdSudo() . 'iptables -A INPUT -i ' . $interface . ' -p tcp  --destination-port 80 -j ACCEPT';
-				log::add('wireguard', 'debug', $cmd);
+				log::add(__CLASS__, 'debug', $cmd);
 				shell_exec($cmd);
 				if (config::byKey('dns::openport') != '') {
 					foreach (explode(',', config::byKey('dns::openport')) as $port) {
@@ -273,14 +271,14 @@ class wireguard extends eqLogic {
 						}
 						try {
 							$cmd = system::getCmdSudo() . 'iptables -A INPUT -i ' . $interface . ' -p tcp  --destination-port ' . $port . ' -j ACCEPT';
-							log::add('wireguard', 'debug', $cmd);
+							log::add(__CLASS__, 'debug', $cmd);
 							shell_exec($cmd);
 						} catch (Exception $e) {
 						}
 					}
 				}
 				$cmd = system::getCmdSudo() . 'iptables -A INPUT -i ' . $interface . ' -j DROP';
-				log::add('wireguard', 'debug', $cmd);
+				log::add(__CLASS__, 'debug', $cmd);
 				shell_exec($cmd);
 			}
 		}
@@ -324,15 +322,9 @@ class wireguard extends eqLogic {
 		$this->checkAndUpdateCmd('ip', $ip);
 	}
 
-	/*     * **********************Getteur Setteur*************************** */
 }
 
 class wireguardCmd extends cmd {
-	/*     * *************************Attributs****************************** */
-
-	/*     * ***********************Methode static*************************** */
-
-	/*     * *********************Methode d'instance************************* */
 
 	public function execute($_options = array()) {
 		$eqLogic = $this->getEqLogic();
@@ -352,5 +344,4 @@ class wireguardCmd extends cmd {
 		}
 	}
 
-	/*     * **********************Getteur Setteur*************************** */
 }
