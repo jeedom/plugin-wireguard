@@ -109,6 +109,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-4 control-label">{{[Interface][PostUp] Post up}}</label>
+									<div class="col-sm-8">
+										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PostUp" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label">{{[Interface][PostDown] Post down}}</label>
+									<div class="col-sm-8">
+										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="PostDown" />
+									</div>
+								</div>
+								<div class="form-group">
 									<label class="col-sm-4 control-label">{{[Peer][Endpoint] Serveur (ip:port)}}</label>
 									<div class="col-sm-8">
 										<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Endpoint" />

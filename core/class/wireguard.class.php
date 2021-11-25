@@ -195,14 +195,19 @@ class wireguard extends eqLogic {
 		if (!file_exists(__DIR__ . '/../../data')) {
 			mkdir(__DIR__ . '/../../data');
 		}
-		$config = "[Interface]
-		Address = " . $this->getConfiguration('Address') . "
-		PrivateKey = " . $this->getConfiguration('PrivateKey') . "
-		
-		[Peer]
-		PublicKey = " . $this->getConfiguration('PublicKey') . "
-		Endpoint = " . $this->getConfiguration('Endpoint') . "
-		AllowedIPs = " . $this->getConfiguration('AllowedIPs') . "\n";
+		$config = "[Interface]\n";
+		$config .= "Address = " . $this->getConfiguration('Address') . "\n";
+		$config .= "PrivateKey = " . $this->getConfiguration('PrivateKey') . "\n";
+		if ($this->getConfiguration('PostUp') != '') {
+			$config .= "PostUp = " . $this->getConfiguration('PostUp') . "\n";
+		}
+		if ($this->getConfiguration('PostDown') != '') {
+			$config .= "PostDown = " . $this->getConfiguration('PostDown') . "\n";
+		}
+		$config .= "[Peer]\n";
+		$config .= "PublicKey = " . $this->getConfiguration('PublicKey') . "\n";
+		$config .= "Endpoint = " . $this->getConfiguration('Endpoint') . "\n";
+		$config .= "AllowedIPs = " . $this->getConfiguration('AllowedIPs') . "\n";
 		if ($this->getConfiguration('PresharedKey') != '') {
 			$config .= "PresharedKey = " . $this->getConfiguration('PresharedKey') . "\n";
 		}
