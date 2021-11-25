@@ -193,7 +193,7 @@ class wireguard extends eqLogic {
 		$this->setConfiguration('PresharedKey', utils::encrypt($this->getConfiguration('PresharedKey')));
 	}
 
-	public static function replaceTag($_str) {
+	public function replaceTag($_str) {
 		$replace = array();
 		$replace['#interface#'] = 'wg_' . $this->getId();
 		return str_replace(array_keys($replace), $replace, $_str);
