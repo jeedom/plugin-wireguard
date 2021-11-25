@@ -15,24 +15,21 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-* Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
-*/
 function addCmdToTable(_cmd) {
   if (!isset(_cmd)) {
     var _cmd = {configuration: {}};
   }
   var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
   tr += '<td>';
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">';
+  tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display:none;">';
   tr += '<input class="cmdAttr form-control input-sm" data-l1key="name"></td>';
   tr += '<td>';
   tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
   tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span> ';
   tr += '</td>';
   tr += '<td style="width:150px">';
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="type" style="display : none;">';
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="subType" style="display : none;">';
+  tr += '<input class="cmdAttr form-control input-sm" data-l1key="type" style="display:none;">';
+  tr += '<input class="cmdAttr form-control input-sm" data-l1key="subType" style="display:none;">';
   if (is_numeric(_cmd.id)) {
     tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> ';
     tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> {{Tester}}</a>';
