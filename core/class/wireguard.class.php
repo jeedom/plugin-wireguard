@@ -184,11 +184,19 @@ class wireguard extends eqLogic {
 		$this->setConfiguration('PrivateKey', utils::decrypt($this->getConfiguration('PrivateKey')));
 		$this->setConfiguration('PublicKey', utils::decrypt($this->getConfiguration('PublicKey')));
 		$this->setConfiguration('Endpoint', utils::decrypt($this->getConfiguration('Endpoint')));
+		$this->setConfiguration('PresharedKey', utils::decrypt($this->getConfiguration('PresharedKey')));
 	}
 	public function encrypt() {
 		$this->setConfiguration('PrivateKey', utils::encrypt($this->getConfiguration('PrivateKey')));
 		$this->setConfiguration('PublicKey', utils::encrypt($this->getConfiguration('PublicKey')));
 		$this->setConfiguration('Endpoint', utils::encrypt($this->getConfiguration('Endpoint')));
+		$this->setConfiguration('PresharedKey', utils::encrypt($this->getConfiguration('PresharedKey')));
+	}
+
+	public static function replaceTag($_str) {
+		$replace = array();
+		$replace['#interface#'] = 'wg_' . $this->getId();
+		return str_replace(array_keys($replace), $replace, $_str);
 	}
 
 	private function writeConfig() {
@@ -199,10 +207,10 @@ class wireguard extends eqLogic {
 		$config .= "Address = " . $this->getConfiguration('Address') . "\n";
 		$config .= "PrivateKey = " . $this->getConfiguration('PrivateKey') . "\n";
 		if ($this->getConfiguration('PostUp') != '') {
-			$config .= "PostUp = " . $this->getConfiguration('PostUp') . "\n";
+			$config .= "PostUp = " . $this->replaceTag($this->getConfiguration('PostUp')) . "\n";
 		}
 		if ($this->getConfiguration('PostDown') != '') {
-			$config .= "PostDown = " . $this->getConfiguration('PostDown') . "\n";
+			$config .= "PostDown = " . $this->replaceTag($this->getConfiguration('PostDown')) . "\n";
 		}
 		$config .= "[Peer]\n";
 		$config .= "PublicKey = " . $this->getConfiguration('PublicKey') . "\n";
