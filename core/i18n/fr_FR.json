@@ -1,0 +1,61 @@
+{
+    "plugins\/wireguard\/desktop\/php\/wireguard.php": {
+        "401 - Accès non autorisé": "401 - Accès non autorisé",
+        "Gestion": "Gestion",
+        "Ajouter": "Ajouter",
+        "Configuration": "Configuration",
+        "Mes Wireguards": "Mes Wireguards",
+        "Aucun équipement Wireguard n\\'est paramétré": "Aucun équipement Wireguard n\\'est paramétré",
+        "Rechercher": "Rechercher",
+        "Configuration avancée": "Configuration avancée",
+        "Sauvegarder": "Sauvegarder",
+        "Supprimer": "Supprimer",
+        "Equipement": "Equipement",
+        "Commandes": "Commandes",
+        "Paramètres généraux": "Paramètres généraux",
+        "Nom du client Wireguard": "Nom du client Wireguard",
+        "Nom de l'équipement wireguard": "Nom de l'équipement wireguard",
+        "Objet parent": "Objet parent",
+        "Aucun": "Aucun",
+        "Catégorie": "Catégorie",
+        "Options": "Options",
+        "Activer": "Activer",
+        "Visible": "Visible",
+        "Adresse": "Adresse",
+        "adresse de l'interface client Wireguard": "adresse de l'interface client Wireguard",
+        "Clé privée": "Clé privée",
+        "clé privée du client Wireguard": "clé privée du client Wireguard",
+        "commandes à exécuter au démarrage de l'interface client Wireguard (facultatif)": "commandes à exécuter au démarrage de l'interface client Wireguard (facultatif)",
+        "commandes à exécuter à l'arrêt de l'interface client Wireguard (facultatif)": "commandes à exécuter à l'arrêt de l'interface client Wireguard (facultatif)",
+        "Clé publique": "Clé publique",
+        "renseigner la clé publique du serveur Wireguard": "renseigner la clé publique du serveur Wireguard",
+        "Point terminal": "Point terminal",
+        "adresse IP publique du serveur : port d'écoute (ip:port)": "adresse IP publique du serveur : port d'écoute (ip:port)",
+        "IPs autorisées": "IPs autorisées",
+        "liste des adresses IP autorisées": "liste des adresses IP autorisées",
+        "Clé pré-partagée": "Clé pré-partagée",
+        "renseigner la clé pré-partagée (facultatif)": "renseigner la clé pré-partagée (facultatif)",
+        "Maintenir la connexion": "Maintenir la connexion",
+        "délai de vérification de la liaison en secondes (facultatif)": "délai de vérification de la liaison en secondes (facultatif)",
+        "Nom": "Nom",
+        "Actions": "Actions"
+    },
+    "plugins\/wireguard\/desktop\/js\/wireguard.js": {
+        "Afficher": "Afficher",
+        "Historiser": "Historiser",
+        "Tester": "Tester"
+    },
+    "plugins\/wireguard\/core\/class\/wireguard.class.php": {
+        "Retour invalide : ": "Retour invalide : ",
+        "Démarré": "Démarré",
+        "Actif": "Actif",
+        "Démarrer": "Démarrer",
+        "Arrêter": "Arrêter",
+        "IP": "IP",
+        "Lancement wireguard : ": "Lancement wireguard : ",
+        "Aucune": "Aucune"
+    },
+    "info.json": {
+        "Plugin permettant de gérer la connexion à un serveur Wireguard.": "Plugin permettant de gérer la connexion à un serveur Wireguard."
+    }
+}
