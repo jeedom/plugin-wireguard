@@ -4,5 +4,8 @@
   },
   "apt" : {
     "wireguard" : {}
+  },
+  "post-install" : {
+    "script" : "plugins/wireguard/resources/post-install.sh"
   }
 }
