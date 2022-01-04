@@ -273,12 +273,12 @@
         "[Actif]": "[Aktiv]",
         "*Actif*": "*Aktiv*",
         " Actif*": " Aktiv*",
-        " IP.": " IP.",
-        " IP?": " IP?",
-        "IP ": "IP ",
-        " IP]": " IP]",
-        "[IP]": "[IP]",
-        "*IP*": "*IP*",
-        " IP*": " IP*"
+        " IP.": " Ip.",
+        " IP?": " Ip?",
+        "IP ": "Ip ",
+        " IP]": " Ip]",
+        "[IP]": "[Ip]",
+        "*IP*": "*Ip*",
+        " IP*": " Ip*"
     }
 }

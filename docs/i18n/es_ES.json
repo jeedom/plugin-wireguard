@@ -69,7 +69,7 @@
         "IPs autorisées": "IP autorizadas",
         "liste des adresses IP autorisées": "lista de direcciones IP autorizadas",
         "Clé pré-partagée": "Clave previamente compartida",
-        "clé pré-partagée": "clave precompartida",
+        "clé pré-partagée": "Clave previamente compartida",
         "Maintenir la connexion": "Mantener la conexión",
         "délai de vérification de la liaison en secondes": "Retraso de verificación de enlace en segundos",
         "Seul le support relatif à l'accès au DNS Jeedom est assuré par l'équipe": "El equipo solo proporciona soporte relacionado con el acceso al DNS de Jeedom",
@@ -273,12 +273,12 @@
         "[Actif]": "[Activo]",
         "*Actif*": "*Activo*",
         " Actif*": " Activo*",
-        " IP.": " IP.",
-        " IP?": " IP?",
-        "IP ": "IP ",
-        " IP]": " IP]",
-        "[IP]": "[IP]",
-        "*IP*": "*IP*",
-        " IP*": " IP*"
+        " IP.": " Ip.",
+        " IP?": " Ip?",
+        "IP ": "Ip ",
+        " IP]": " Ip]",
+        "[IP]": "[Ip]",
+        "*IP*": "*Ip*",
+        " IP*": " Ip*"
     }
 }
