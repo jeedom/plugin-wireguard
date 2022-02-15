@@ -321,7 +321,6 @@ class wireguard extends eqLogic {
 		$this->checkAndUpdateCmd('up', $up);
 		$this->checkAndUpdateCmd('ip', $ip);
 	}
-
 }
 
 class wireguardCmd extends cmd {
@@ -343,5 +342,4 @@ class wireguardCmd extends cmd {
 			}
 		}
 	}
-
 }
