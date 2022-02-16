@@ -38,7 +38,7 @@
         "Maintenir la connexion": "Keep the connection",
         "délai de vérification de la liaison en secondes (facultatif)": "link verification timeout in seconds (optional)",
         "Nom": "Name",
-        "Actions": "Actions"
+        "Actions": "Shares"
     },
     "plugins\/wireguard\/desktop\/js\/wireguard.js": {
         "Afficher": "Display",
@@ -51,7 +51,7 @@
         "Actif": "Active",
         "Démarrer": "To start up",
         "Arrêter": "Stop",
-        "IP": "IP",
+        "IP": "IPs",
         "Lancement wireguard : ": "Wireguard launch:",
         "Aucune": "None"
     },
