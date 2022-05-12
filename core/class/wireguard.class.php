@@ -300,9 +300,9 @@ class wireguard extends eqLogic {
 	}
 
 	public function getLatestHandshakes() {
-		$result = explode("\t", shell_exec("sudo wg show " . $this->getInterfaceName() . " latest-handshakes"))[1];
+		$result = @explode("\t", shell_exec("sudo wg show " . $this->getInterfaceName() . " latest-handshakes"))[1];
 		if (!is_numeric($result)) {
-			return 0;
+			return strtotime('now');
 		}
 		return $result;
 	}
