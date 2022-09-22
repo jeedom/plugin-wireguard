@@ -56,6 +56,6 @@
         "Aucune": "Ninguno"
     },
     "info.json": {
-        "Plugin permettant de gérer la connexion à un serveur Wireguard.": "Complemento para administrar la conexión a un servidor wireguard"
+        "Plugin permettant de gérer la connexion à un serveur Wireguard. Compatible uniquement avec le DNS Jeedom pour le moment": "Complemento que permite administrar la conexión a un servidor Wireguard. Solo compatible con Jeedom DNS por el momento"
     }
 }
