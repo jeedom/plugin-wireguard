@@ -1,5 +1,11 @@
 {
+  "pre-install" : {
+    "script" : "plugins/wireguard/resources/pre-install.sh"
+  },
   "apt" : {
     "wireguard" : {}
+  },
+  "post-install" : {
+    "script" : "plugins/wireguard/resources/post-install.sh"
   }
 }

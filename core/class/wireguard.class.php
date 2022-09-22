@@ -20,13 +20,11 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class wireguard extends eqLogic {
-	/*     * *************************Attributs****************************** */
 
 	/*     * ***********************Methode static*************************** */
 
-
 	public static function cron5() {
-		foreach (self::byType('wireguard') as $eqLogic) {
+		foreach (self::byType(__CLASS__) as $eqLogic) {
 			try {
 				if ($eqLogic->getConfiguration('enable') == 1 && !$eqLogic->getState()) {
 					if ($eqLogic->getLogicalId() == 'dnsjeedom') {
@@ -61,11 +59,14 @@ class wireguard extends eqLogic {
 		if ($this->getConfiguration('PrivateKey') == '') {
 			$this->setConfiguration('PrivateKey', trim(shell_exec('wg genkey')));
 		}
+		if ($this->getConfiguration('PresharedKey') == '') {
+			$this->setConfiguration('PresharedKey', trim(shell_exec('wg genpsk')));
+		}
 		$publickey = trim(shell_exec('echo \'' . $this->getConfiguration('PrivateKey') . '\' | wg pubkey'));
 		$url = 'https://api.eu.jeedom.link/service/jeedns/register';
 		$request_http = new com_http($url);
 		$request_http->setHeader(array('Content-Type: application/json'));
-		$request_http->setPost(json_encode(array('username' => jeedom::getHardwareKey(), 'password' => config::byKey('dns::token'), 'PublicKey' => $publickey)));
+		$request_http->setPost(json_encode(array('username' => jeedom::getHardwareKey(), 'password' => config::byKey('dns::token'), 'PublicKey' => $publickey, 'PresharedKey' => $this->getConfiguration('PresharedKey'))));
 		$result = $request_http->exec();
 		$json = is_json($result, false);
 		if ($json === false) {
@@ -78,6 +79,7 @@ class wireguard extends eqLogic {
 		$this->setConfiguration('Address', $json['result']['AllowIps']);
 		$this->setConfiguration('Endpoint', $json['result']['Ip'] . ':' . $json['result']['ListenPort']);
 		$this->setConfiguration('AllowedIPs', '172.0.0.1/32');
+		$this->setConfiguration('PeristentKeepalive', 25);
 		$this->save(true);
 	}
 
@@ -124,7 +126,7 @@ class wireguard extends eqLogic {
 			$up->setLogicalId('up');
 			$up->setIsVisible(1);
 			$up->setName(__('Actif', __FILE__));
-			$state->setOrder(2);
+			$up->setOrder(2);
 			$up->setConfiguration('repeatEventManagement', 'never');
 		}
 		$up->setType('info');
@@ -138,7 +140,7 @@ class wireguard extends eqLogic {
 			$start->setLogicalId('start');
 			$start->setIsVisible(1);
 			$start->setName(__('Démarrer', __FILE__));
-			$state->setOrder(4);
+			$start->setOrder(4);
 		}
 		$start->setType('action');
 		$start->setSubType('other');
@@ -151,7 +153,7 @@ class wireguard extends eqLogic {
 			$stop->setLogicalId('stop');
 			$stop->setIsVisible(1);
 			$stop->setName(__('Arrêter', __FILE__));
-			$state->setOrder(5);
+			$stop->setOrder(5);
 		}
 		$stop->setType('action');
 		$stop->setSubType('other');
@@ -164,7 +166,7 @@ class wireguard extends eqLogic {
 			$ip->setLogicalId('ip');
 			$ip->setIsVisible(1);
 			$ip->setName(__('IP', __FILE__));
-			$state->setOrder(3);
+			$ip->setOrder(3);
 		}
 		$ip->setType('info');
 		$ip->setSubType('string');
@@ -180,27 +182,44 @@ class wireguard extends eqLogic {
 		$this->setConfiguration('PrivateKey', utils::decrypt($this->getConfiguration('PrivateKey')));
 		$this->setConfiguration('PublicKey', utils::decrypt($this->getConfiguration('PublicKey')));
 		$this->setConfiguration('Endpoint', utils::decrypt($this->getConfiguration('Endpoint')));
+		$this->setConfiguration('PresharedKey', utils::decrypt($this->getConfiguration('PresharedKey')));
 	}
 	public function encrypt() {
 		$this->setConfiguration('PrivateKey', utils::encrypt($this->getConfiguration('PrivateKey')));
 		$this->setConfiguration('PublicKey', utils::encrypt($this->getConfiguration('PublicKey')));
 		$this->setConfiguration('Endpoint', utils::encrypt($this->getConfiguration('Endpoint')));
+		$this->setConfiguration('PresharedKey', utils::encrypt($this->getConfiguration('PresharedKey')));
+	}
+
+	public function replaceTag($_str) {
+		$replace = array();
+		$replace['#interface#'] = 'wg_' . $this->getId();
+		return str_replace(array_keys($replace), $replace, $_str);
 	}
 
 	private function writeConfig() {
 		if (!file_exists(__DIR__ . '/../../data')) {
 			mkdir(__DIR__ . '/../../data');
 		}
-		$config = "[Interface]
-		Address = " . $this->getConfiguration('Address') . "
-		PrivateKey = " . $this->getConfiguration('PrivateKey') . "
-		
-		[Peer]
-		PublicKey = " . $this->getConfiguration('PublicKey') . "
-		Endpoint = " . $this->getConfiguration('Endpoint') . "
-		PersistentKeepalive = " . $this->getConfiguration('PeristentKeepalive', 25) . "
-		AllowedIPs = " . $this->getConfiguration('AllowedIPs');
-
+		$config = "[Interface]\n";
+		$config .= "Address = " . $this->getConfiguration('Address') . "\n";
+		$config .= "PrivateKey = " . $this->getConfiguration('PrivateKey') . "\n";
+		if ($this->getConfiguration('PostUp') != '') {
+			$config .= "PostUp = " . $this->replaceTag($this->getConfiguration('PostUp')) . "\n";
+		}
+		if ($this->getConfiguration('PostDown') != '') {
+			$config .= "PostDown = " . $this->replaceTag($this->getConfiguration('PostDown')) . "\n";
+		}
+		$config .= "[Peer]\n";
+		$config .= "PublicKey = " . $this->getConfiguration('PublicKey') . "\n";
+		$config .= "Endpoint = " . $this->getConfiguration('Endpoint') . "\n";
+		$config .= "AllowedIPs = " . $this->getConfiguration('AllowedIPs') . "\n";
+		if ($this->getConfiguration('PresharedKey') != '') {
+			$config .= "PresharedKey = " . $this->getConfiguration('PresharedKey') . "\n";
+		}
+		if ($this->getConfiguration('PeristentKeepalive') != '') {
+			$config .= "PersistentKeepalive = " . $this->getConfiguration('PeristentKeepalive', 25) . "\n";
+		}
 		unlink(__DIR__ . '/../../data/wg_' . $this->getId() . '.conf');
 		file_put_contents(__DIR__ . '/../../data/wg_' . $this->getId() . '.conf', $config);
 	}
@@ -225,7 +244,7 @@ class wireguard extends eqLogic {
 			$interface = $this->getInterfaceName();
 			if ($interface !== null && $interface != '' && $interface !== false) {
 				$cmd = system::getCmdSudo() . 'iptables -L INPUT -v --line-numbers | grep ' . $interface;
-				log::add('wireguard', 'debug', $cmd);
+				log::add(__CLASS__, 'debug', $cmd);
 				$rules = shell_exec($cmd);
 				$c = 0;
 				while ($rules != '') {
@@ -234,7 +253,7 @@ class wireguard extends eqLogic {
 						break;
 					}
 					$cmd = system::getCmdSudo() . 'iptables -D INPUT ' . $ln;
-					log::add('wireguard', 'debug', $cmd);
+					log::add(__CLASS__, 'debug', $cmd);
 					shell_exec($cmd);
 					$rules = shell_exec(system::getCmdSudo() . 'iptables -L INPUT -v --line-numbers | grep ' . $interface);
 					$c++;
@@ -243,7 +262,7 @@ class wireguard extends eqLogic {
 					}
 				}
 				$cmd = system::getCmdSudo() . 'iptables -A INPUT -i ' . $interface . ' -p tcp  --destination-port 80 -j ACCEPT';
-				log::add('wireguard', 'debug', $cmd);
+				log::add(__CLASS__, 'debug', $cmd);
 				shell_exec($cmd);
 				if (config::byKey('dns::openport') != '') {
 					foreach (explode(',', config::byKey('dns::openport')) as $port) {
@@ -252,14 +271,14 @@ class wireguard extends eqLogic {
 						}
 						try {
 							$cmd = system::getCmdSudo() . 'iptables -A INPUT -i ' . $interface . ' -p tcp  --destination-port ' . $port . ' -j ACCEPT';
-							log::add('wireguard', 'debug', $cmd);
+							log::add(__CLASS__, 'debug', $cmd);
 							shell_exec($cmd);
 						} catch (Exception $e) {
 						}
 					}
 				}
 				$cmd = system::getCmdSudo() . 'iptables -A INPUT -i ' . $interface . ' -j DROP';
-				log::add('wireguard', 'debug', $cmd);
+				log::add(__CLASS__, 'debug', $cmd);
 				shell_exec($cmd);
 			}
 		}
@@ -271,12 +290,21 @@ class wireguard extends eqLogic {
 	}
 
 	public function getState() {
-		$return = (shell_exec("sudo wg show " . $this->getInterfaceName() . " | grep 'latest handshake' | wc -l") > 0);
-		if (!$return) {
-			usleep(rand(10000, 2000000));
-			$return = (shell_exec("sudo wg show " . $this->getInterfaceName() . " | grep 'latest handshake' | wc -l") > 0);
+		if ((strtotime('now')  - $this->getLatestHandshakes()) < 200) {
+			return true;
 		}
-		return $return;
+		sleep(5);
+		if ((strtotime('now')  - $this->getLatestHandshakes()) < 200) {
+			return true;
+		}
+	}
+
+	public function getLatestHandshakes() {
+		$result = @explode("\t", shell_exec("sudo wg show " . $this->getInterfaceName() . " latest-handshakes"))[1];
+		if (!is_numeric($result)) {
+			return strtotime('now');
+		}
+		return $result;
 	}
 
 	public function updateState() {
@@ -297,16 +325,9 @@ class wireguard extends eqLogic {
 		$this->checkAndUpdateCmd('up', $up);
 		$this->checkAndUpdateCmd('ip', $ip);
 	}
-
-	/*     * **********************Getteur Setteur*************************** */
 }
 
 class wireguardCmd extends cmd {
-	/*     * *************************Attributs****************************** */
-
-	/*     * ***********************Methode static*************************** */
-
-	/*     * *********************Methode d'instance************************* */
 
 	public function execute($_options = array()) {
 		$eqLogic = $this->getEqLogic();
@@ -325,6 +346,4 @@ class wireguardCmd extends cmd {
 			}
 		}
 	}
-
-	/*     * **********************Getteur Setteur*************************** */
 }

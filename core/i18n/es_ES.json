@@ -1,0 +1,61 @@
+{
+    "plugins\/wireguard\/desktop\/php\/wireguard.php": {
+        "401 - Accès non autorisé": "401 - Acceso no autorizado",
+        "Gestion": "Gestión",
+        "Ajouter": "Agregar",
+        "Configuration": "Configuración",
+        "Mes Wireguards": "Mis protectores de cables",
+        "Aucun équipement Wireguard n\\'est paramétré": "No se configura ningún equipo Wireguard",
+        "Rechercher": "Buscar",
+        "Configuration avancée": "Configuración avanzada",
+        "Sauvegarder": "Para salvaguardar",
+        "Supprimer": "Borrar",
+        "Equipement": "Equipo",
+        "Commandes": "Pedidos",
+        "Paramètres généraux": "Configuración general",
+        "Nom du client Wireguard": "Nombre del cliente de Wireguard",
+        "Nom de l'équipement wireguard": "Nombre del equipo Wireguard",
+        "Objet parent": "Objeto padre",
+        "Aucun": "No",
+        "Catégorie": "Categoría",
+        "Options": "Opciones",
+        "Activer": "Activar",
+        "Visible": "Visible",
+        "Adresse": "Dirección",
+        "adresse de l'interface client Wireguard": "Dirección de la interfaz de cliente de Wireguard",
+        "Clé privée": "Llave privada",
+        "clé privée du client Wireguard": "Clave privada del cliente Wireguard",
+        "commandes à exécuter au démarrage de l'interface client Wireguard (facultatif)": "comandos que se ejecutarán al iniciar la interfaz de cliente Wireguard (opcional)",
+        "commandes à exécuter à l'arrêt de l'interface client Wireguard (facultatif)": "comandos que se ejecutarán cuando se detenga la interfaz del cliente Wireguard (opcional)",
+        "Clé publique": "Llave pública",
+        "renseigner la clé publique du serveur Wireguard": "ingrese la clave pública del servidor Wireguard",
+        "Point terminal": "Punto final",
+        "adresse IP publique du serveur : port d'écoute (ip:port)": "dirección IP pública del servidor: puerto de escucha (ip: puerto)",
+        "IPs autorisées": "IP autorizadas",
+        "liste des adresses IP autorisées": "lista de direcciones IP autorizadas",
+        "Clé pré-partagée": "Clave previamente compartida",
+        "renseigner la clé pré-partagée (facultatif)": "ingrese la clave previamente compartida (opcional)",
+        "Maintenir la connexion": "Mantener la conexión",
+        "délai de vérification de la liaison en secondes (facultatif)": "tiempo de espera de verificación de enlace en segundos (opcional)",
+        "Nom": "Apellido",
+        "Actions": "Comportamiento"
+    },
+    "plugins\/wireguard\/desktop\/js\/wireguard.js": {
+        "Afficher": "Monitor",
+        "Historiser": "Historizar",
+        "Tester": "Prueba"
+    },
+    "plugins\/wireguard\/core\/class\/wireguard.class.php": {
+        "Retour invalide : ": "Devolución inválida:",
+        "Démarré": "Empezado",
+        "Actif": "Activo",
+        "Démarrer": "Comenzar",
+        "Arrêter": "Parar",
+        "IP": "IP",
+        "Lancement wireguard : ": "Lanzamiento de Wireguard:",
+        "Aucune": "Ninguno"
+    },
+    "info.json": {
+        "Plugin permettant de gérer la connexion à un serveur Wireguard.": "Complemento para administrar la conexión a un servidor wireguard"
+    }
+}
